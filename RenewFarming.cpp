@@ -201,15 +201,11 @@ vector<int> Move;
 }
 
 cout<<"Test :"<<endl;
- for(int x=0; x<2; x++){
-    cout<<Test[x]<<endl;
- }
+ displayArray(Test);
  cout<<"\n"<<endl;
  Move = fonction3(Test,local);
  cout<<"Move :"<<endl;               //mouvement a faire pour se deplacer sur le cells le plus proche du but
- for(int m=0; m<2; m++){
-    cout<<Move[m]<<endl;
- }
+ displayArray(Move);
  
  sum = Move[0]+Move[1];
  if(sum<-1 || sum>1){
