@@ -176,9 +176,7 @@ do{
     }
 }while(verif!=1);
 cout<<"\n newlocal"<<endl;
-for(int j=0; j<2; j++){
-    cout<<Test[j]<<endl;
-}
+displayArray(Test);
 npath++;
 cout<<"npath = "<<npath<<"\n"<<endl;
 cout<<" appuiez sur 1 pour contimuer"<<endl;
