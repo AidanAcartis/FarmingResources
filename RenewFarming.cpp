@@ -156,13 +156,7 @@ do{
  Test = fonction1(Test,loggingCamp,local);  //genere le chemin le plus court de la ou on est
 Move = fonction3(Test, local);
 Change = forChange(Move);
-for(int q=0; q<6; q++){
-    for(int w=0; w<2; w++){
-        cout<<Change[q][w]<<endl;
-    }
-    cout<<"\n"<<endl;
-}
- cout<<"\n"<<endl;
+displayMatrice(Change);
 
 do{ 
     verif=0;
