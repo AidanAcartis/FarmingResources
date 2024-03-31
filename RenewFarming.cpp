@@ -83,12 +83,12 @@ vector<int> TestForMove(vector<int> Move, vector<int> Test, vector<int> local){
  path = forChange({0,-1});
  possiblePath = ForPossiblePath(path, Move);  //parfois le mvmt a faire est impossible alors cette fonction genere des chemins 
                                               //possibles qui remplacent ce mvt
- cout<<"possiblePath :\n"<<endl;
- displayMatrice(possiblePath);
+ //cout<<"possiblePath :\n"<<endl;
+ //displayMatrice(possiblePath);
  Move = ChooseRightMove(possiblePath, Move);
- cout<<"rightMove = "<<endl;
- displayArray(Move);
- cout<<"rightTest = "<<endl;
+ //cout<<"rightMove = "<<endl;
+ //displayArray(Move);
+ //cout<<"rightTest = "<<endl;
  Test = RightTest(local, Move);
  
 return Test;
@@ -106,7 +106,7 @@ vector<int> ChooseRightMove(vector<vector<int>> possiblePath, vector<int> Move){
     size = possiblePath.size();
     max = size-1;
     counter = Verif(Move, possiblePath);
-    cout<<"counter = "<<counter<<endl;
+    //cout<<"counter = "<<counter<<endl;
     if(counter==2){
         rightMove = Move;
     }
@@ -145,7 +145,7 @@ vector<vector<int>> ForPossiblePath(vector<vector<int>> path, vector<int> shortP
   return possiblePath;
 }
 int CountPath(vector<int> Test, vector<int> loggingCamp, vector<int> friendlyTroop, vector<vector<int>> Change, vector<int> Move, vector<vector<int>> impassableCells){
-int npath(0), verif(0), counter(0),stop(0);
+int npath(0), verif(0), counter(0);
  vector<vector<int>> impassableMove;
  vector<int> local;
 
@@ -156,7 +156,7 @@ do{
  Test = fonction1(Test,loggingCamp,local);  //genere le chemin le plus court de la ou on est
 Move = fonction3(Test, local);
 Change = forChange(Move);
-displayMatrice(Change);
+//displayMatrice(Change);
 
 do{ 
     verif=0;
@@ -179,8 +179,7 @@ cout<<"\n newlocal"<<endl;
 displayArray(Test);
 npath++;
 cout<<"npath = "<<npath<<"\n"<<endl;
-cout<<" appuiez sur 1 pour contimuer"<<endl;
-cin>>stop;
+
 }while(Test[0]!=loggingCamp[0] || Test[1]!=loggingCamp[1]);
 return npath;
 }
@@ -200,12 +199,11 @@ vector<int> Move;
     }
 }
 
-cout<<"Test :"<<endl;
- displayArray(Test);
- cout<<"\n"<<endl;
+//cout<<"Test :"<<endl;
+ //displayArray(Test);
  Move = fonction3(Test,local);
- cout<<"Move :"<<endl;               //mouvement a faire pour se deplacer sur le cells le plus proche du but
- displayArray(Move);
+ //cout<<"Move :"<<endl;               //mouvement a faire pour se deplacer sur le cells le plus proche du but
+ //displayArray(Move);
  
  sum = Move[0]+Move[1];
  if(sum<-1 || sum>1){
