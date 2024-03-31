@@ -61,12 +61,14 @@ return(friendTime<enemyTime);
 void displayMatrice(vector<vector<int>> matrice){
     int size(0);
     size = matrice.size();
+    cout<<"\n"<<endl;
     for(int i=0; i<size; i++){
         for(int j=0; j<2; j++){
             cout<<matrice[i][j]<<endl;
         }
         cout<<"\n"<<endl;
     }
+    cout<<"\n"<<endl;
 }
 void displayArray(vector<int> array){
     for(int i=0; i<2; i++){
@@ -83,7 +85,6 @@ vector<int> TestForMove(vector<int> Move, vector<int> Test, vector<int> local){
                                               //possibles qui remplacent ce mvt
  cout<<"possiblePath :\n"<<endl;
  displayMatrice(possiblePath);
- cout<<"\n"<<endl;
  Move = ChooseRightMove(possiblePath, Move);
  cout<<"rightMove = "<<endl;
  displayArray(Move);
@@ -125,7 +126,7 @@ vector<vector<int>> ForPossiblePath(vector<vector<int>> path, vector<int> shortP
   int Sum;
   for(int i=0; i<6; i++){
     Sum = path[i][0]+path[i][1];
-    if(sum<=-1 && Sum==-1){
+    if(sum<-1 && Sum==-1){
 
              for(int j=0; j<2; j++){
                 temp.push_back(path[i][j]);
@@ -133,14 +134,7 @@ vector<vector<int>> ForPossiblePath(vector<vector<int>> path, vector<int> shortP
              possiblePath.push_back(temp);
              temp.clear();
     }
-    else if(sum==0 && Sum==0){
-            for(int k=0; k<2; k++){
-                temp.push_back(path[i][k]);
-            }
-            possiblePath.push_back(temp);
-            temp.clear();
-    }
-    else if(sum>=1 && Sum==1){
+    else if(sum>1 && Sum==1){
             for(int l=0; l<2; l++){
                 temp.push_back(path[i][l]);
             }
