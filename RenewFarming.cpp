@@ -233,15 +233,13 @@ return counter;
 vector<vector<int>> forMove(vector<int> Test, vector<vector<int>> impassableCells){
     vector<vector<int>> impassableMove;
     int size = impassableCells.size();
+
     for (int i = 0; i < size; i++) {
-        // Créer un vecteur temporaire pour stocker les coordonnées après la soustraction
-        vector<int> temp;
+        vector<int> temp;    // Créer un vecteur temporaire pour stocker les coordonnées après la soustraction
         for (int j = 0; j < 2; j++) {
             temp.push_back(impassableCells[i][j] - Test[j]);
-            //cout << temp[j] << endl;
         }
-        // Ajouter le vecteur temporaire à impassableMove
-        impassableMove.push_back(temp);
+        impassableMove.push_back(temp);  // Ajouter le vecteur temporaire à impassableMove
         cout << "\n" << endl;
     }
     return impassableMove;
@@ -303,13 +301,7 @@ for(int i=1; i<6; (i=i+2)){
 }
 Test[0]=Test[0]+Move[0];
 Test[1]=Test[1]+Move[1];
-    //cout<<"\n Move"<<endl;
-//for(int k=0; k<2; k++){
-    //cout<<Move[k]<<endl;
-//}
-
-//cout<<"counter = "<<counter<<endl;
-//cout<<"sum = "<<sum<<endl;
+   
 return Test;
 }
 vector<int> fonction3(vector<int> Test, vector<int> friendlyTroop){
