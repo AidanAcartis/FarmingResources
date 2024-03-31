@@ -15,6 +15,7 @@ int Verif(vector<int> Test, vector<vector<int>> impassableCells);
 vector<vector<int>> forChange(vector<int> Move);
 vector<vector<int>> ForPossiblePath(vector<vector<int>> path, vector<int> shortPath);
 vector<int> ChooseRightMove(vector<vector<int>> possiblePath, vector<int> Move);
+vector<int> RightTest(vector<int> Test, vector<int> rightMove);
 
 int main(){
 vector<int> friendlyTroop = {0,3,9};
@@ -53,6 +54,13 @@ cout<<"\nLe temps pris par les ennemis = "<<enemyTime<<endl;
 
 return(friendTime<enemyTime);
 
+}
+vector<int> RightTest(vector<int> Test, vector<int> rightMove){
+    for(int i=0; i<2; i++){
+        Test[i] = Test[i]+rightMove[i];
+        cout<<Test[i]<<endl;
+    }
+    return Test;
 }
 vector<int> ChooseRightMove(vector<vector<int>> possiblePath, vector<int> Move){
     vector<int> rightMove;
@@ -106,11 +114,12 @@ vector<vector<int>> ForPossiblePath(vector<vector<int>> path, vector<int> shortP
   return possiblePath;
 }
 int CountPath(vector<int> Test, vector<int> loggingCamp, vector<int> friendlyTroop, vector<vector<int>> Change, vector<int> Move, vector<vector<int>> impassableCells){
-int npath(0), verif(0), counter(0),stop(0), size(0);
+int npath(0), verif(0), counter(0),stop(0), size(0), sum(0);
  vector<vector<int>> impassableMove;
  vector<int> local;
  vector<vector<int>> path;
  vector<vector<int>> possiblePath;
+
 
 do{
  impassableCells.push_back(Test);
@@ -123,11 +132,13 @@ do{
  }
  cout<<"\n"<<endl;
  Move = fonction3(Test,local);
- Move = {1,1};
  cout<<"Move :"<<endl;               //mouvement a faire pour se deplacer sur le cells le plus proche du but
  for(int m=0; m<2; m++){
     cout<<Move[m]<<endl;
  }
+ 
+ sum = Move[0]+Move[1];
+ if(sum<-1 || sum>1){
  path = forChange({0,-1});
  possiblePath = ForPossiblePath(path, Move);  //parfois le mvmt a faire est impossible alors cette fonction genere des chemins 
                                               //possibles qui remplacent ce mvt
@@ -142,10 +153,21 @@ for(int i=0; i<size; i++){
  cout<<"\n"<<endl;
  Move = ChooseRightMove(possiblePath, Move);
  cout<<"rightMove = "<<endl;
- for(int c=0; c<2; c++){
+    for(int c=0; c<2; c++){
     cout<<Move[c]<<endl;
  }
+ cout<<"rightTest = "<<endl;
+ Test = RightTest(local, Move);
+ }
+
 Change = forChange(Move);
+for(int q=0; q<6; q++){
+    for(int w=0; w<2; w++){
+        cout<<Change[q][w]<<endl;
+    }
+    cout<<"\n"<<endl;
+}
+ cout<<"\n"<<endl;
 
 do{ 
     verif=0;
@@ -164,7 +186,7 @@ do{
         verif=1;
     }
 }while(verif!=1);
-cout<<"\n Test"<<endl;
+cout<<"\n newlocal"<<endl;
 for(int j=0; j<2; j++){
     cout<<Test[j]<<endl;
 }
