@@ -191,15 +191,12 @@ vector<int> Move;
     for(int i=0; i<2; i++){
     if(Test[i]<loggingCamp[i]){
         Test[i]++;
-        //Move.push_back(Test[i]-friendlyTroop[i]);
     }
     else if(Test[i]>loggingCamp[i]){
         Test[i]--;
-        //Move.push_back(Test[i]-friendlyTroop[i]);
     }
     else if(Test[i]==loggingCamp[i]){
         Test[i]=Test[i]+0;
-        //Move.push_back(Test[i]-friendlyTroop[i]);
     }
 }
 
