@@ -14,6 +14,7 @@ vector<vector<int>> forMove(vector<int> Test, vector<vector<int>> impassableCell
 int Verif(vector<int> Test, vector<vector<int>> impassableCells);
 vector<vector<int>> forChange(vector<int> Move);
 vector<vector<int>> ForPossiblePath(vector<vector<int>> path, vector<int> shortPath);
+vector<int> ChooseRightMove(vector<vector<int>> possiblePath, vector<int> Move);
 
 int main(){
 vector<int> friendlyTroop = {0,3,9};
@@ -52,6 +53,25 @@ cout<<"\nLe temps pris par les ennemis = "<<enemyTime<<endl;
 
 return(friendTime<enemyTime);
 
+}
+vector<int> ChooseRightMove(vector<vector<int>> possiblePath, vector<int> Move){
+    vector<int> rightMove;
+    int counter(0), size(0), min(0), max(0), a(0);
+    size = possiblePath.size();
+    max = size-1;
+    counter = Verif(Move, possiblePath);
+    cout<<"counter = "<<counter<<endl;
+    if(counter==2){
+        rightMove = Move;
+    }
+    else{
+        a = rand()%(max-min+1)+min;
+        for(int i=0; i<2; i++){
+            rightMove.push_back(possiblePath[a][i]);
+            cout<<rightMove[i]<<endl;
+        }
+    }
+    return rightMove;
 }
 vector<vector<int>> ForPossiblePath(vector<vector<int>> path, vector<int> shortPath){
   vector<vector<int>> possiblePath;
@@ -96,13 +116,14 @@ do{
  impassableCells.push_back(Test);
  impassableMove = forMove(Test, impassableCells);
  local = Test;
- Test = fonction1(Test,loggingCamp);  //genere le chemin le plus court
+ Test = fonction1(Test,loggingCamp);  //genere le chemin le plus court de la ou on est
  cout<<"Test :"<<endl;
  for(int x=0; x<2; x++){
     cout<<Test[x]<<endl;
  }
  cout<<"\n"<<endl;
  Move = fonction3(Test,local);
+ Move = {1,1};
  cout<<"Move :"<<endl;               //mouvement a faire pour se deplacer sur le cells le plus proche du but
  for(int m=0; m<2; m++){
     cout<<Move[m]<<endl;
@@ -119,6 +140,11 @@ for(int i=0; i<size; i++){
     cout<<"\n"<<endl;
 }
  cout<<"\n"<<endl;
+ Move = ChooseRightMove(possiblePath, Move);
+ cout<<"rightMove = "<<endl;
+ for(int c=0; c<2; c++){
+    cout<<Move[c]<<endl;
+ }
 Change = forChange(Move);
 
 do{ 
@@ -170,6 +196,7 @@ int Verif(vector<int> Test, vector<vector<int>> impassableCells){
     int counter=0;
      int size = impassableCells.size();
 for(int m=0; m<size; m++){
+        counter = 0;
     for(int n=0; n<2; n++){
         if(impassableCells[m][n]==Test[n]){
           counter++;
