@@ -17,6 +17,8 @@ vector<vector<int>> ForPossiblePath(vector<vector<int>> path, vector<int> shortP
 vector<int> ChooseRightMove(vector<vector<int>> possiblePath, vector<int> Move);
 vector<int> RightTest(vector<int> Test, vector<int> rightMove);
 vector<int> TestForMove(vector<int> Move, vector<int> Test, vector<int> local);
+void displayMatrice(vector<vector<int>> matrice);
+void displayArray(vector<int> array);
 
 int main(){
 vector<int> friendlyTroop = {0,3,9};
@@ -56,28 +58,35 @@ cout<<"\nLe temps pris par les ennemis = "<<enemyTime<<endl;
 return(friendTime<enemyTime);
 
 }
+void displayMatrice(vector<vector<int>> matrice){
+    int size(0);
+    size = matrice.size();
+    for(int i=0; i<size; i++){
+        for(int j=0; j<2; j++){
+            cout<<matrice[i][j]<<endl;
+        }
+        cout<<"\n"<<endl;
+    }
+}
+void displayArray(vector<int> array){
+    for(int i=0; i<2; i++){
+        cout<<array[i]<<endl;
+    }
+    cout<<"\n"<<endl;
+}
 vector<int> TestForMove(vector<int> Move, vector<int> Test, vector<int> local){
   vector<vector<int>> path;
   vector<vector<int>> possiblePath;
-  int size(0);
 
  path = forChange({0,-1});
  possiblePath = ForPossiblePath(path, Move);  //parfois le mvmt a faire est impossible alors cette fonction genere des chemins 
                                               //possibles qui remplacent ce mvt
- size = possiblePath.size();
  cout<<"possiblePath :\n"<<endl;
-for(int i=0; i<size; i++){
-    for(int j=0; j<2; j++){
-        cout<<possiblePath[i][j]<<endl;
-    }
-    cout<<"\n"<<endl;
-}
+ displayMatrice(possiblePath);
  cout<<"\n"<<endl;
  Move = ChooseRightMove(possiblePath, Move);
  cout<<"rightMove = "<<endl;
-    for(int c=0; c<2; c++){
-    cout<<Move[c]<<endl;
- }
+ displayArray(Move);
  cout<<"rightTest = "<<endl;
  Test = RightTest(local, Move);
  
