@@ -24,10 +24,10 @@ int Forbid(vector<vector<int>> analyse, vector<vector<int>> impassableCells, vec
 int indiceMin(vector<int> forbidden);
 
 int main(){
-vector<int> friendlyTroop = {0,-3,1};
-vector<int> enemyTroop = {2,-3,1};
-vector<int> loggingCamp = {-3,0};
-vector<vector<int>> impassableCells = {{-1,-2},{-2,-1},{-2,0},{-3,-1}};
+vector<int> friendlyTroop = {17,18,6};
+vector<int> enemyTroop = {19,16,6};
+vector<int> loggingCamp = {18,19};
+vector<vector<int>> impassableCells = {{17,19},{18,18},{19,18}};
 if(solution(friendlyTroop, enemyTroop, loggingCamp, impassableCells)){
     cout<<"True"<<endl;
 }
