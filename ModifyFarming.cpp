@@ -6,19 +6,22 @@
 
 using namespace std;
 bool solution(vector<int> friendlyTroop, vector<int> enemyTroop, vector<int> loggingCamp, vector<vector<int>> impassableCells);
-vector<int> fonction1(vector<int> Test, vector<int> loggingCamp, vector<int> local);
-vector<int> fonction2(vector<int> Test, vector<vector<int>> impassableMove,vector<vector<int>> Change);
+vector<int> fonction1(vector<int> Test, vector<int> loggingCamp, vector<int> local, vector<vector<int>> impassableCells);
+vector<int> fonction2(vector<int> Test, vector<vector<int>> impassableMove,vector<vector<int>> Change, vector<vector<int>> impassableCells, vector<int> local);
 vector<int> fonction3(vector<int> Test, vector<int> friendlyTroop);
 int CountPath(vector<int> Test, vector<int> loggingCamp, vector<int> friendlyTroop, vector<vector<int>> Change, vector<int> Move, vector<vector<int>> impassableCells);
 vector<vector<int>> forMove(vector<int> Test, vector<vector<int>> impassableCells);
 int Verif(vector<int> Test, vector<vector<int>> impassableCells);
 vector<vector<int>> forChange(vector<int> Move);
 vector<vector<int>> ForPossiblePath(vector<vector<int>> path, vector<int> shortPath);
-vector<int> ChooseRightMove(vector<vector<int>> possiblePath, vector<int> Move);
+vector<int> ChooseRightMove(vector<vector<int>> possiblePath, vector<int> Move, vector<vector<int>> impassableCells, vector<int> local);
 vector<int> RightTest(vector<int> Test, vector<int> rightMove);
-vector<int> TestForMove(vector<int> Move, vector<int> Test, vector<int> local);
+vector<int> TestForMove(vector<int> Move, vector<int> Test, vector<int> local, vector<vector<int>> impassableCells);
 void displayMatrice(vector<vector<int>> matrice);
 void displayArray(vector<int> array);
+vector<int> choice(vector<vector<int>> possiblePath, vector<vector<int>> impassableCells, vector<int> local);
+int Forbid(vector<vector<int>> analyse, vector<vector<int>> impassableCells, vector<int> Test);
+int indiceMin(vector<int> forbidden);
 
 int main(){
 vector<int> friendlyTroop = {0,-3,1};
@@ -73,14 +76,14 @@ void displayArray(vector<int> array){
         cout<<array[i]<<endl;
     }
 }
-vector<int> TestForMove(vector<int> Move, vector<int> Test, vector<int> local){
+vector<int> TestForMove(vector<int> Move, vector<int> Test, vector<int> local, vector<vector<int>> impassableCells){
   vector<vector<int>> path;
   vector<vector<int>> possiblePath;
 
  path = forChange({0,-1});
  possiblePath = ForPossiblePath(path, Move);  //parfois le mvmt a faire est impossible alors cette fonction genere des chemins 
                                               //possibles qui remplacent ce mvt
- Move = ChooseRightMove(possiblePath, Move);
+ Move = ChooseRightMove(possiblePath, Move, impassableCells, local);
  Test = RightTest(local, Move);
  
 return Test;
@@ -91,20 +94,88 @@ vector<int> RightTest(vector<int> Test, vector<int> rightMove){
     }
     return Test;
 }
-vector<int> ChooseRightMove(vector<vector<int>> possiblePath, vector<int> Move){
-    vector<int> rightMove;
-    int counter(0), size(0), min(0), max(0), a(0);
+int indiceMin(vector<int> forbidden){
+    int size(0), counter(0), indicemin(0);
+    size = forbidden.size();
+
+    for(int i=0; i<size; i++){
+        counter = 0;
+        for(int j=0; j<size; j++){
+            if(forbidden[i]<=forbidden[j]){
+                counter++;
+            }
+        }
+        if(counter==size){
+            indicemin = i;
+            i=size;
+        }
+    }
+
+    return indicemin;
+}
+
+int Forbid(vector<vector<int>> analyse, vector<vector<int>> impassableCells, vector<int> Test){
+    vector<int> Tempo;
+    vector<int> test;
+    int counter(0), p(0);
+
+    for(int i=0; i<6; i++){
+        for(int j=0; j<2; j++){
+            Tempo.push_back(analyse[i][j]);
+        }
+        for(int k=0; k<2; k++){
+            test.push_back(Tempo[k]+Test[k]);
+        }
+        counter = Verif(test, impassableCells);
+        if(counter==2){
+           p++;
+        }
+        test.clear();
+        Tempo.clear();
+    }
+
+    return p;
+}
+vector<int> choice(vector<vector<int>> possiblePath, vector<vector<int>> impassableCells, vector<int> local){
+    vector<int> temp;
+    vector<vector<int>> analyse;
+    vector<int> forbidden;
+    vector<vector<int>> impassableMove;
+    vector<int> rightChoice;
+    vector<int> Test;
+    int size(0), nbr(0), indicemin(0);
     size = possiblePath.size();
-    max = size-1;
+    
+    for(int i=0; i<size; i++){
+        for(int j=0; j<2; j++){
+           temp.push_back(possiblePath[i][j]);
+        }
+        for(int k=0; k<2; k++){
+            Test.push_back(local[k]+temp[k]);
+        }
+        analyse = forChange(temp);
+        nbr = Forbid(analyse, impassableCells, Test);
+        forbidden.push_back(nbr);
+        Test.clear();
+        temp.clear();
+    }
+    indicemin  = indiceMin(forbidden);
+    for(int k=0; k<2; k++){
+        rightChoice.push_back(possiblePath[indicemin][k]);
+    }
+
+    return rightChoice;
+}
+vector<int> ChooseRightMove(vector<vector<int>> possiblePath, vector<int> Move, vector<vector<int>> impassableCells, vector<int> local){
+    vector<int> rightMove;
+    int counter(0);
     counter = Verif(Move, possiblePath);
+
     if(counter==2){
         rightMove = Move;
     }
     else{
-        a = rand()%(max-min+1)+min;
-        for(int i=0; i<2; i++){
-            rightMove.push_back(possiblePath[a][i]);
-        }
+        rightMove = choice(possiblePath, impassableCells, local);
     }
     return rightMove;
 }
@@ -142,7 +213,7 @@ do{
  impassableCells.push_back(Test);
  impassableMove = forMove(Test, impassableCells);
  local = Test;
- Test = fonction1(Test,loggingCamp,local);  //genere le chemin le plus court de la ou on est
+ Test = fonction1(Test,loggingCamp,local, impassableCells);  //genere le chemin le plus court de la ou on est
 Move = fonction3(Test, local);
 Change = forChange(Move);
 
@@ -151,7 +222,7 @@ do{
     counter=0;
     counter = Verif(Test,impassableCells);
     if(counter==2){
-      Test = fonction2(local,impassableMove,Change);
+      Test = fonction2(local,impassableMove,Change,impassableCells,local);
       if(Test[0]==local[0] && Test[1]==local[1]){
         verif=1;
         Test[0]=loggingCamp[0];
@@ -171,7 +242,7 @@ cout<<"npath = "<<npath<<"\n"<<endl;
 }while(Test[0]!=loggingCamp[0] || Test[1]!=loggingCamp[1]);
 return npath;
 }
-vector<int> fonction1(vector<int> Test, vector<int> loggingCamp, vector<int> local){
+vector<int> fonction1(vector<int> Test, vector<int> loggingCamp, vector<int> local, vector<vector<int>> impassableCells){
 int sum(0);
 vector<int> Move; 
 
@@ -189,7 +260,7 @@ vector<int> Move;
  Move = fonction3(Test,local);     //mouvement a faire pour se deplacer sur le cells le plus proche du but
  sum = Move[0]+Move[1];
  if(sum<-1 || sum>1){
-    Test = TestForMove(Move, Test, local);
+    Test = TestForMove(Move, Test, local, impassableCells);
  }
 return Test;
 }
@@ -223,10 +294,13 @@ vector<vector<int>> forMove(vector<int> Test, vector<vector<int>> impassableCell
     }
     return impassableMove;
 }
-vector<int> fonction2(vector<int> Test, vector<vector<int>> impassableMove,vector<vector<int>> Change){
-    int counter(0), verif(0), compteur(0), a(0), Counter(0);
+
+vector<int> fonction2(vector<int> Test, vector<vector<int>> impassableMove,vector<vector<int>> Change, vector<vector<int>> impassableCells, vector<int> local){
+    int counter(0), compteur(0), a(0), Counter(0), b(0);
     vector<int> temp;
+    vector<int> Temp;
     vector<int> Move;
+    vector<vector<int>> possiblePath;
 
 for(int i=1; i<6; (i=i+2)){
     
@@ -248,33 +322,37 @@ for(int i=1; i<6; (i=i+2)){
     }
     else{
      a = rand()%((i+1)-i+1)+i;
-     do{ 
-         verif=0;
-         counter=0;
-         temp.clear();
-         for(int j=0; j<2; j++){
-            temp.push_back(Change[a][j]);
-         }
-         counter = Verif(temp, impassableMove);
-         if(counter==2){
             if(a==i){
-                a = i+1;
+                b = i+1;
             }
             else if(a==(i+1)){
-                a=i;
+                b=i;
             }
+
+         
+         for(int j=0; j<2; j++){
+            temp.push_back(Change[a][j]);
+            Temp.push_back(Change[b][j]);
          }
-         else{
+         counter = Verif(temp, impassableMove);
+         compteur = Verif(Temp, impassableMove);
+            
+            if(counter==2 && compteur!=2){
+                Move = Temp;
+                i=6;
+            }
+            else if(counter!=2 && compteur==2){
             Move = temp;
-            verif = 1;
             i=6;
-         }
-         compteur++;
-         if(compteur==2){
-            temp.clear();
-            verif=1;
-         }
-     }while(verif!=1);
+            }
+            else if(counter!=2 && compteur!=2){
+               cout<<"On y est"<<endl;
+               possiblePath.push_back(temp);
+               possiblePath.push_back(Temp);
+               Move = choice(possiblePath,impassableCells,local);
+               i=6;
+            }
+         
     }
     
 }

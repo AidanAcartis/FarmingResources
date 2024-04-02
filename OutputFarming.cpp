@@ -19,10 +19,10 @@ vector<int> RightTest(vector<int> Test, vector<int> rightMove);
 vector<int> TestForMove(vector<int> Move, vector<int> Test, vector<int> local);
 
 int main(){
-vector<int> friendlyTroop = {0,3,9};
-vector<int> enemyTroop = {1,0,9};
-vector<int> loggingCamp = {1,1};
-vector<vector<int>> impassableCells = {{0,2},{1,2}};
+vector<int> friendlyTroop = {0,-3,1};
+vector<int> enemyTroop = {2,-3,1};
+vector<int> loggingCamp = {-3,0};
+vector<vector<int>> impassableCells = {{-1,-2},{-2,-1},{-2,0},{-3,-1}};
 if(solution(friendlyTroop, enemyTroop, loggingCamp, impassableCells)){
     cout<<"True"<<endl;
 }
